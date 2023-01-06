@@ -17,6 +17,65 @@ window.onload = function() {
   xhr.send();
 };
 
+function buildMetaTable(data, containerId) {
+  // Build the table
+  const table = document.createElement('table');
+  table.className = "meta-table";
+  const tbody = document.createElement('tbody');
+  table.appendChild(tbody);
+
+  // Add a row for each property in the data
+  for (const property in data) {
+    if (data.hasOwnProperty(property)) {
+      const tr = document.createElement('tr');
+      const attributeTd = document.createElement('td');
+      attributeTd.textContent = property;
+      tr.appendChild(attributeTd);
+      const valueTd = document.createElement('td');
+      valueTd.textContent = data[property];
+      tr.appendChild(valueTd);
+      tbody.appendChild(tr);
+    }
+  }
+
+  // Add the table to the page
+  document.getElementById(containerId).appendChild(table);
+}
+
+function buildDataTable(data, headings) {
+  // Build the table
+  const table = document.createElement('table');
+  const thead = document.createElement('thead');
+  const tbody = document.createElement('tbody');
+  table.appendChild(thead);
+  table.appendChild(tbody);
+
+  // Add the headings
+  const tr = document.createElement('tr');
+  headings.forEach(heading => {
+    const th = document.createElement('th');
+    th.textContent = heading;
+    tr.appendChild(th);
+  });
+  thead.appendChild(tr);
+
+  // Add the data rows
+  data.forEach(row => {
+    const tr = document.createElement('tr');
+    row.forEach(cell => {
+      const td = document.createElement('td');
+      td.textContent = cell;
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+
+  // Add the table to the page
+  const container = document.getElementById('data');
+  container.innerHTML = "<h2>Data</h2>";
+  container.appendChild(table);
+}
+
 function loadResources(statisticId) {
   // Clear any existing resource options
   document.getElementById("resource").innerHTML = '<option disabled selected value="">-- select an option --</option>';
@@ -45,28 +104,7 @@ function loadResources(statisticId) {
       console.log(statisticMeta);
 
       // Display meta information for the current statistic
-      // Build the table
-      const table = document.createElement('table');
-      table.className = "meta-table";
-      const tbody = document.createElement('tbody');
-      table.appendChild(tbody);
-
-      // Add a row for each statisticMeta property
-      for (const property in statisticMeta) {
-        if (statisticMeta.hasOwnProperty(property)) {
-          const tr = document.createElement('tr');
-          const attributeTd = document.createElement('td');
-          attributeTd.textContent = property;
-          tr.appendChild(attributeTd);
-          const valueTd = document.createElement('td');
-          valueTd.textContent = statisticMeta[property];
-          tr.appendChild(valueTd);
-          tbody.appendChild(tr);
-        }
-      }
-
-      // Add the table to the page
-      document.getElementById("statistic-meta").appendChild(table);
+      buildMetaTable(statisticMeta, "statistic-meta");
 
     }
   };
@@ -83,28 +121,7 @@ function loadData(resourceId) {
   console.log(resource.url);
 
   // Display meta information for the current resource
-  // Build the table
-  const table = document.createElement('table');
-  table.className = "meta-table";
-  const tbody = document.createElement('tbody');
-  table.appendChild(tbody);
-
-  // Add a row for each resource property
-  for (const property in resource) {
-    if (resource.hasOwnProperty(property)) {
-      const tr = document.createElement('tr');
-      const attributeTd = document.createElement('td');
-      attributeTd.textContent = property;
-      tr.appendChild(attributeTd);
-      const valueTd = document.createElement('td');
-      valueTd.textContent = resource[property];
-      tr.appendChild(valueTd);
-      tbody.appendChild(tr);
-    }
-  }
-
-  // Add the table to the page
-  document.getElementById("resource-meta").appendChild(table);
+  buildMetaTable(resource, "resource-meta");
 
   // Display the loading message
   document.getElementById("data").innerHTML = "<br>Loading data, please wait...";
@@ -128,37 +145,7 @@ function loadData(resourceId) {
 
         console.log(headings);
 
-        // Build the table
-        const table = document.createElement('table');
-        const thead = document.createElement('thead');
-        const tbody = document.createElement('tbody');
-        table.appendChild(thead);
-        table.appendChild(tbody);
-
-        // Add the headings
-        const tr = document.createElement('tr');
-        headings.forEach(heading => {
-          const th = document.createElement('th');
-          th.textContent = heading;
-          tr.appendChild(th);
-        });
-        thead.appendChild(tr);
-
-        // Add the data rows
-        data.forEach(row => {
-          const tr = document.createElement('tr');
-          row.forEach(cell => {
-            const td = document.createElement('td');
-            td.textContent = cell;
-            tr.appendChild(td);
-          });
-          tbody.appendChild(tr);
-        });
-
-        // Add the table to the page
-        const container = document.getElementById('data');
-        container.innerHTML = "<h2>Data</h2>";
-        container.appendChild(table);
+        buildDataTable(data, headings);
 
       } else if (resource.mimetype.toLowerCase() === 'image/png') {
 
@@ -186,3 +173,4 @@ function loadData(resourceId) {
   };
   xhr.send();
 }
+
