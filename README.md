@@ -1,5 +1,5 @@
 # National Grid ESO Data Viewer
-A tool to view CSV, image and other data from [National Grid ESO's data portal](https://data.nationalgrideso.com/)
+A tool to view CSV, image and other data from [National Grid ESO's data portal](https://data.nationalgrideso.com/).
 
 You can view the tool on Replit [here](https://national-grid-eso-data-viewer.paulmaunders.repl.co/), or download and run it locally on your web browser.
 ## Background
