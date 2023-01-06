@@ -118,7 +118,7 @@ function loadData(resourceId) {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
 
       // If the resource is a CSV file, parse and display it as a table
-      if (resource.format.toLowerCase() === 'csv') {
+      if (resource.mimetype.toLowerCase() === 'text/csv') {
         // Parse the CSV data
         let rows = xhr.responseText.split('\n');
         // Remove the extra row with a single empty cell from the end of the table
@@ -160,7 +160,7 @@ function loadData(resourceId) {
         container.innerHTML = "<h2>Data</h2>";
         container.appendChild(table);
 
-      } else if (resource.format.toLowerCase() === 'png') {
+      } else if (resource.mimetype.toLowerCase() === 'image/png') {
 
         // If the resource is an image, display it
         const img = document.createElement('img');
